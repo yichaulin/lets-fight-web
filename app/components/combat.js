@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Row, Col } from 'antd';
 import RoundTimeLine from './round-time-line';
 import FighterProfile from './fighter-profile';
+import { AvatarGenerator } from 'random-avatar-generator';
+
+const generator = new AvatarGenerator();
 
 const sleep = async (times) => {
     return new Promise(resolve => {
@@ -11,13 +14,27 @@ const sleep = async (times) => {
 
 const displayRoundGadually = async (allRounds, setRounds) => {
     for (let i = 0; i < allRounds.length; i++) {
-        await sleep(2000)
         setRounds(allRounds.slice(0, i+1))
+        await sleep(2000)
     }
 }
 
-const Combat = ({ fighters, imageUrls }) => {
+const newFighter = (fighterName) => {
+    return {
+        name: fighterName,
+        imageUrl: generator.generateRandomAvatar(fighterName),
+        isReady: false
+    }
+}
+
+const Combat = ({ fighterNames }) => {
     const [rounds, setRounds] = useState([])
+    const [isAReady, setIsAReady] = useState(false)
+    const [isBReady, setIsBReady] = useState(false)
+
+    const fighterA = newFighter(fighterNames[0])
+    const fighterB = newFighter(fighterNames[1])
+
     const allRounds = [
         '1. Create a services site 2015-09-01',
         '2. Solve initial network problems 2015-09-01',
@@ -26,22 +43,30 @@ const Combat = ({ fighters, imageUrls }) => {
     ]
 
     useEffect(async () => {
-        displayRoundGadually(allRounds, setRounds)
-    }, [])
+        if (isAReady && isBReady) {
+            displayRoundGadually(allRounds, setRounds)
+        }
+    }, [isAReady, isBReady])
 
     return (
         <Row justify="center">
             <Col span={8}>
-                {fighters.length >= 2 && (
-                    <FighterProfile fighterName={fighters[0]} imageUrl={imageUrls[0]} />
+                {fighterA.name && (
+                    <FighterProfile
+                        fighter={fighterA}
+                        isLoaded={() => setIsAReady(true)}
+                    />
                 )}
             </Col>
             <Col span={8}>
                 <RoundTimeLine rounds={rounds} />
             </Col>
             <Col span={8}>
-                {fighters.length >= 2 && (
-                    <FighterProfile fighterName={fighters[1]} imageUrl={imageUrls[1]} />
+                {fighterB.name && (
+                    <FighterProfile
+                        fighter={fighterB}
+                        isLoaded={() => setIsBReady(true)}
+                    />
                 )}
             </Col>
         </Row>

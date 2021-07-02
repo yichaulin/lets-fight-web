@@ -1,17 +1,25 @@
 import React from "react";
 import { Card, Row, Col } from 'antd';
 
-const FighterProfile = ({ fighterName, imageUrl }) => {
+const FighterProfile = ({ fighter, isLoaded }) => {
+    const fighterName = fighter.name
+    const imageUrl = fighter.imageUrl
 
     return (
         <Row>
             <Col span={5} />
             <Col span={14}>
                 <Card
-                    // style={{ width: 240 }}
                     title={fighterName}
-                    cover={<img alt={fighterName} src={imageUrl} />}
+                    cover={
+                        <img
+                            alt={fighterName}
+                            src={imageUrl}
+                            onLoad={isLoaded}
+                        />
+                    }
                     headStyle={{textAlign: 'center'}}
+                    loading={true}
                 >
                 </Card>
             </Col>
