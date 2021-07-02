@@ -4,20 +4,14 @@ import RoundTimeLine from './round-time-line';
 import FighterProfile from './fighter-profile';
 import { AvatarGenerator } from 'random-avatar-generator';
 
+const allRounds = [
+    '1. Create a services site 2015-09-01',
+    '2. Solve initial network problems 2015-09-01',
+    '3. Technical testing 2015-09-01',
+    '4. Network problems being solved 2015-09-01',
+]
+
 const generator = new AvatarGenerator();
-
-const sleep = async (times) => {
-    return new Promise(resolve => {
-        setTimeout(resolve, times)
-    })
-}
-
-const displayRoundGadually = async (allRounds, setRounds) => {
-    for (let i = 0; i < allRounds.length; i++) {
-        setRounds(allRounds.slice(0, i+1))
-        await sleep(2000)
-    }
-}
 
 const newFighter = (fighterName) => {
     return {
@@ -35,16 +29,12 @@ const Combat = ({ fighterNames }) => {
     const fighterA = newFighter(fighterNames[0])
     const fighterB = newFighter(fighterNames[1])
 
-    const allRounds = [
-        '1. Create a services site 2015-09-01',
-        '2. Solve initial network problems 2015-09-01',
-        '3. Technical testing 2015-09-01',
-        '4. Network problems being solved 2015-09-01',
-    ]
+
 
     useEffect(async () => {
         if (isAReady && isBReady) {
-            displayRoundGadually(allRounds, setRounds)
+            const newRounds = allRounds
+            setRounds(newRounds)
         }
     }, [isAReady, isBReady])
 
