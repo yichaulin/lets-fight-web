@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
     template: `${__dirname}/app/index.html`,
@@ -7,7 +8,7 @@ const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
 });
 
 module.exports = {
-    mode: 'production',
+    mode: process.env.NODE_ENV,
     entry: [
         './app/index.js',
     ],
@@ -15,7 +16,7 @@ module.exports = {
         path: `${__dirname}/public`,
         filename: 'js/[name].js',
     },
-    devtool: 'source-map',
+    devtool: 'cheap-module-source-map',
     module: {
         rules: [
             {
@@ -27,9 +28,41 @@ module.exports = {
                         presets: ['@babel/preset-env', '@babel/preset-react']
                     }
                 }
-            }
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader'
+                ]
+            },
+            {
+                test: /\.less$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'less-loader'
+                ]
+            },
+            {
+                test: /\.style$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader'
+                ]
+            },
         ]
     },
-    // plugins 放置所使用的外掛
-    plugins: [HTMLWebpackPluginConfig],
+    stats: {
+		colors: true,
+		errorDetails: true,
+	},
+    devServer: {
+        hot: true
+    },
+    plugins: [
+        HTMLWebpackPluginConfig,
+        new MiniCssExtractPlugin({
+            filename: 'css/[name].css',
+        })
+    ],
 };
