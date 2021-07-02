@@ -25,7 +25,8 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['@babel/preset-env', '@babel/preset-react']
+                        presets: ['@babel/preset-env', '@babel/preset-react'],
+                        plugins: ["@babel/plugin-transform-runtime"]
                     }
                 }
             },
@@ -53,9 +54,9 @@ module.exports = {
         ]
     },
     stats: {
-		colors: true,
-		errorDetails: true,
-	},
+        colors: true,
+        errorDetails: true,
+    },
     devServer: {
         hot: true
     },
@@ -63,6 +64,6 @@ module.exports = {
         HTMLWebpackPluginConfig,
         new MiniCssExtractPlugin({
             filename: 'css/[name].css',
-        })
+        }),
     ],
 };
