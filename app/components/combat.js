@@ -31,17 +31,18 @@ const Combat = ({ fighters, imageUrls }) => {
 
     return (
         <Row justify="center">
-            <Col span={24}>
-                <h1>Header</h1>
-            </Col>
             <Col span={8}>
-                <FighterProfile fighterName={fighters[0]} imageUrl={imageUrls[0]} />
+                {fighters.length >= 2 && (
+                    <FighterProfile fighterName={fighters[0]} imageUrl={imageUrls[0]} />
+                )}
             </Col>
             <Col span={8}>
                 <RoundTimeLine rounds={rounds} />
             </Col>
             <Col span={8}>
-                <FighterProfile fighterName={fighters[1]} imageUrl={imageUrls[1]} />
+                {fighters.length >= 2 && (
+                    <FighterProfile fighterName={fighters[1]} imageUrl={imageUrls[1]} />
+                )}
             </Col>
         </Row>
     )
