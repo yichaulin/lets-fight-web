@@ -1,10 +1,7 @@
 import React from "react";
-import { AvatarGenerator } from 'random-avatar-generator';
 import { Card, Row, Col } from 'antd';
 
-const FighterProfile = ({ fighterName }) => {
-    const generator = new AvatarGenerator();
-    const imageUrl = generator.generateRandomAvatar();
+const FighterProfile = ({ fighterName, imageUrl }) => {
 
     return (
         <Row>
@@ -14,7 +11,7 @@ const FighterProfile = ({ fighterName }) => {
                     // style={{ width: 240 }}
                     title={fighterName}
                     cover={<img alt={fighterName} src={imageUrl} />}
-                    headStyle={{'text-align': 'center'}}
+                    headStyle={{textAlign: 'center'}}
                 >
                 </Card>
             </Col>
