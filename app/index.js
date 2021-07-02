@@ -1,10 +1,9 @@
+import 'antd/dist/antd.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Layout, Row, Col } from 'antd';
+import { Row, Col } from 'antd';
 import RoundTimeLine from './components/round-time-line';
-import 'antd/dist/antd.css';
-
-const { Header, Content} = Layout;
+import FighterProfile from './components/fighter-profile';
 
 const App = () => {
     const rounds = [
@@ -13,21 +12,22 @@ const App = () => {
         'Technical testing 2015-09-01',
         'Network problems being solved 2015-09-01',
     ]
+    const fighters = ['Saber', 'Archer']
     return (
-        <Layout>
-            <Content>
-                <Row>
-                    <Col span={24}>
-                        <h1>Header</h1>
-                    </Col>
-                    <Col span={8}>Fighter 1</Col>
-                    <Col span={8}>
-                        <RoundTimeLine rounds={rounds} />
-                    </Col>
-                    <Col span={8}>Fighter 2</Col>
-                </Row>
-            </Content>
-        </Layout>
+        <Row justify="center" align="middle">
+            <Col span={24}>
+                <h1>Header</h1>
+            </Col>
+            <Col span={8}>
+                <FighterProfile fighterName={fighters[0]} />
+            </Col>
+            <Col span={8}>
+                <RoundTimeLine rounds={rounds} />
+            </Col>
+            <Col span={8}>
+                <FighterProfile fighterName={fighters[1]} />
+            </Col>
+        </Row>
     );
 }
 
