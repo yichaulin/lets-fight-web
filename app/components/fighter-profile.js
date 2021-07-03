@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Row, Col } from 'antd';
 
-const FighterProfile = ({ fighter, isLoaded }) => {
+const FighterProfile = ({ fighter, isReady, onLoadedHander }) => {
     const fighterName = fighter.name
     const imageUrl = fighter.imageUrl
 
@@ -15,11 +15,11 @@ const FighterProfile = ({ fighter, isLoaded }) => {
                         <img
                             alt={fighterName}
                             src={imageUrl}
-                            onLoad={isLoaded}
+                            onLoad={onLoadedHander}
                         />
                     }
                     headStyle={{textAlign: 'center'}}
-                    loading={true}
+                    loading={!isReady}
                 >
                 </Card>
             </Col>

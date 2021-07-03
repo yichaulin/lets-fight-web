@@ -44,7 +44,8 @@ const Combat = ({ fighterNames }) => {
                 {fighterA.name && (
                     <FighterProfile
                         fighter={fighterA}
-                        isLoaded={() => setIsAReady(true)}
+                        isReady={isAReady}
+                        onLoadedHander={() => setIsAReady(true)}
                     />
                 )}
             </Col>
@@ -55,7 +56,8 @@ const Combat = ({ fighterNames }) => {
                 {fighterB.name && (
                     <FighterProfile
                         fighter={fighterB}
-                        isLoaded={() => setIsBReady(true)}
+                        isReady={isBReady}
+                        onLoadedHander={() => setIsBReady(true)}
                     />
                 )}
             </Col>
