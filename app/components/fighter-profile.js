@@ -1,25 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Row, Col } from 'antd';
+import { AvatarGenerator } from 'random-avatar-generator';
+import sleep from 'sleep-promise';
 
-const FighterProfile = ({ fighter, isReady, onLoadedHander }) => {
-    const fighterName = fighter.name
-    const imageUrl = fighter.imageUrl
+const generator = new AvatarGenerator();
+
+const FighterProfile = ({ fighterName, setIsReady }) => {
+    const [loading, setLoading] = useState(true)
+    const [imageUrl, setImageUrl] = useState("")
+
+    const onLoadedHandler = () => {
+        setLoading(false)
+        setIsReady(true)
+    }
+
+    useEffect(async () => {
+        setImageUrl("")
+        setLoading(true)
+        setIsReady(false)
+
+        if (fighterName) {
+            await sleep(1000)
+            const imageUrl = generator.generateRandomAvatar(fighterName)
+            setImageUrl(imageUrl)
+        }
+    }, [fighterName])
 
     return (
         <Row>
             <Col span={5} />
             <Col span={14}>
                 <Card
-                    title={fighterName}
+                    title={fighterName || "TBD"}
                     cover={
-                        <img
+                        imageUrl && (<img
                             alt={fighterName}
                             src={imageUrl}
-                            onLoad={onLoadedHander}
-                        />
+                            onLoad={onLoadedHandler}
+                        />)
                     }
                     headStyle={{textAlign: 'center'}}
-                    loading={!isReady}
+                    loading={loading}
                 >
                 </Card>
             </Col>

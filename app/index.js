@@ -1,16 +1,36 @@
 import 'antd/dist/antd.css';
 import React, {Fragment, useState} from 'react';
+import {Divider} from 'antd'
 import ReactDOM from 'react-dom';
 import Combat from './components/combat';
 import CombatSetup from './components/combat-setup'
 
 const App = () => {
     const [fighterNames, setFighterNames] = useState([])
+    const [isFighting, setIsFighting] = useState(false)
+    const [roundID, setRoundID] = useState("")
+
+    const combatSetupHandler = (names, roundID) => {
+        setFighterNames(names)
+        setIsFighting(true)
+        setRoundID(roundID)
+    }
 
     return (
         <Fragment>
-            <CombatSetup fighters={fighterNames} fightersSetter={(names) => {setFighterNames(names)}} />
-            <Combat fighterNames={fighterNames} />
+            <CombatSetup
+                isFighting={isFighting}
+                combatSetupHandler={combatSetupHandler}
+            />
+            <Divider>
+                <h2>Rounds</h2>
+            </Divider>
+            <Combat
+                roundID={roundID}
+                fighterNames={fighterNames}
+                isFighting={isFighting}
+                isFightingHandler={setIsFighting}
+            />
         </Fragment>
     );
 }

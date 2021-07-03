@@ -14,11 +14,12 @@ const displayRoundGadually = async (allRounds, setDisplayRounds) => {
     }
 }
 
-const RoundTimeLine = ({rounds}) => {
+const RoundTimeLine = ({rounds, isFightingHandler}) => {
     const [displayRounds, setDisplayRounds] = useState([])
 
-    useEffect(() => {
-        displayRoundGadually(rounds, setDisplayRounds)
+    useEffect(async () => {
+        await displayRoundGadually(rounds, setDisplayRounds)
+        isFightingHandler(false)
     }, [rounds])
 
     return (

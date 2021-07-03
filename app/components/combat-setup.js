@@ -1,10 +1,15 @@
-import React from 'react'
+import React, { useState }from 'react'
 import { Form, Input, Button } from 'antd'
+import { v4 as uuidv4 } from 'uuid';
 
-const CombatSetup = ({ fighters, fightersSetter }) => {
+const CombatSetup = ({ isFighting, combatSetupHandler }) => {
+    const [fighters, setFighters] = useState([])
+
     const setupHandler = ({fighterA, fighterB}) => {
         const newFighters = [fighterA, fighterB]
-        fightersSetter(newFighters)
+        const newRoundID = uuidv4()
+        setFighters(newFighters)
+        combatSetupHandler(newFighters, newRoundID)
     }
     const fields = [{
         name: ['fighterA'],
@@ -23,7 +28,7 @@ const CombatSetup = ({ fighters, fightersSetter }) => {
                 <Input />
             </Form.Item>
             <Form.Item>
-                <Button type="primary" htmlType="submit">
+                <Button type="primary" htmlType="submit" loading={isFighting}>
                     Fight !!!!
                 </Button>
             </Form.Item>

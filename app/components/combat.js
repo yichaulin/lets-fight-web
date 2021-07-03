@@ -2,64 +2,57 @@ import React, { useState, useEffect } from "react";
 import { Row, Col } from 'antd';
 import RoundTimeLine from './round-time-line';
 import FighterProfile from './fighter-profile';
-import { AvatarGenerator } from 'random-avatar-generator';
+import { LoremIpsum } from "lorem-ipsum";
 
-const allRounds = [
-    '1. Create a services site 2015-09-01',
-    '2. Solve initial network problems 2015-09-01',
-    '3. Technical testing 2015-09-01',
-    '4. Network problems being solved 2015-09-01',
-]
+const lorem = new LoremIpsum()
 
-const generator = new AvatarGenerator();
-
-const newFighter = (fighterName) => {
-    return {
-        name: fighterName,
-        imageUrl: generator.generateRandomAvatar(fighterName),
-        isReady: false
+const generateNewRounds = (n) => {
+    const rounds = []
+    for (let i = 0; i < n; i++) {
+        rounds.push(lorem.generateSentences(1))
     }
+    return rounds
 }
 
-const Combat = ({ fighterNames }) => {
+var newRounds = []
+const Combat = ({ fighterNames, roundID, isFighting, isFightingHandler }) => {
     const [rounds, setRounds] = useState([])
     const [isAReady, setIsAReady] = useState(false)
     const [isBReady, setIsBReady] = useState(false)
 
-    const fighterA = newFighter(fighterNames[0])
-    const fighterB = newFighter(fighterNames[1])
-
-
-
-    useEffect(async () => {
+    useEffect(() => {
         if (isAReady && isBReady) {
-            const newRounds = allRounds
             setRounds(newRounds)
         }
     }, [isAReady, isBReady])
 
+    useEffect(() => {
+        newRounds = generateNewRounds(4)
+        if (isAReady && isBReady) {
+            setRounds(newRounds)
+        }
+    }, [roundID])
+
+
     return (
         <Row justify="center">
             <Col span={8}>
-                {fighterA.name && (
-                    <FighterProfile
-                        fighter={fighterA}
-                        isReady={isAReady}
-                        onLoadedHander={() => setIsAReady(true)}
-                    />
-                )}
+                <FighterProfile
+                    fighterName={fighterNames[0]}
+                    setIsReady={setIsAReady}
+                />
             </Col>
             <Col span={8}>
-                <RoundTimeLine rounds={rounds} />
+                <RoundTimeLine
+                    rounds={rounds}
+                    isFightingHandler={isFightingHandler}
+                />
             </Col>
             <Col span={8}>
-                {fighterB.name && (
-                    <FighterProfile
-                        fighter={fighterB}
-                        isReady={isBReady}
-                        onLoadedHander={() => setIsBReady(true)}
-                    />
-                )}
+                <FighterProfile
+                    fighterName={fighterNames[1]}
+                    setIsReady={setIsBReady}
+                />
             </Col>
         </Row>
     )
