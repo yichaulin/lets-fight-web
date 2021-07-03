@@ -5,7 +5,7 @@ import sleep from 'sleep-promise';
 
 const generator = new AvatarGenerator();
 
-const FighterProfile = ({ fighterName, setIsReady }) => {
+const FighterProfile = ({header, fighterName, setIsReady }) => {
     const [loading, setLoading] = useState(true)
     const [imageUrl, setImageUrl] = useState("")
 
@@ -30,6 +30,7 @@ const FighterProfile = ({ fighterName, setIsReady }) => {
         <Row>
             <Col span={5} />
             <Col span={14}>
+                <h3 style={{textAlign: 'center'}}>{header}</h3>
                 <Card
                     title={fighterName || "TBD"}
                     cover={

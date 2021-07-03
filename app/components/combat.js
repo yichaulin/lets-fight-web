@@ -38,6 +38,7 @@ const Combat = ({ fighterNames, roundID, isFighting, isFightingHandler }) => {
         <Row justify="center">
             <Col span={8}>
                 <FighterProfile
+                    header="Fighter A"
                     fighterName={fighterNames[0]}
                     setIsReady={setIsAReady}
                 />
@@ -50,6 +51,7 @@ const Combat = ({ fighterNames, roundID, isFighting, isFightingHandler }) => {
             </Col>
             <Col span={8}>
                 <FighterProfile
+                    header="Fighter B"
                     fighterName={fighterNames[1]}
                     setIsReady={setIsBReady}
                 />
