@@ -2,42 +2,15 @@ import 'antd/dist/antd.css';
 import React, {Fragment, useState} from 'react';
 import { Divider, Row, Col } from 'antd'
 import ReactDOM from 'react-dom';
+import { IntlProvider } from 'react-intl'
 import Combat from './components/combat';
 import CombatSetup from './components/combat-setup'
+import App from './components/app'
+import zh from './i18n/zh'
 
-const App = () => {
-    const [fighterNames, setFighterNames] = useState([])
-    const [isFighting, setIsFighting] = useState(false)
-    const [roundID, setRoundID] = useState("")
-
-    const combatSetupHandler = (names, roundID) => {
-        setFighterNames(names)
-        setIsFighting(true)
-        setRoundID(roundID)
-    }
-
-    return (
-        <Fragment>
-            <Row>
-                <Col span={1} />
-                <Col span={7}>
-                    <CombatSetup
-                        isFighting={isFighting}
-                        combatSetupHandler={combatSetupHandler}
-                    />
-                </Col>
-            </Row>
-            <Divider>
-                <h2>Rounds</h2>
-            </Divider>
-            <Combat
-                roundID={roundID}
-                fighterNames={fighterNames}
-                isFighting={isFighting}
-                isFightingHandler={setIsFighting}
-            />
-        </Fragment>
-    );
-}
-
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render(
+    <IntlProvider messages={zh.messages} locale={zh.lang} defaultLocale="zh">
+        <App />
+    </IntlProvider>,
+    document.getElementById('app')
+);

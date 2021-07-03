@@ -2,15 +2,25 @@ import React, { useState, useEffect } from "react";
 import { Row, Col } from 'antd';
 import RoundTimeLine from './round-time-line';
 import FighterProfile from './fighter-profile';
+import { FormatRoundResults } from '../formatter/formatter'
 import { LoremIpsum } from "lorem-ipsum";
 
 const lorem = new LoremIpsum()
 
 const generateNewRounds = (n) => {
+    const res = require('../../res.json')
+    const roundResults = res.roundResults
     const rounds = []
-    for (let i = 0; i < n; i++) {
-        rounds.push(lorem.generateSentences(1))
+
+    for (let i = 0; i < roundResults.length; i++) {
+        const roundResult = roundResults[i]
+        const formattedResults = FormatRoundResults(roundResult)
+        rounds.push(formattedResults)
     }
+    // const rounds = []
+    // for (let i = 0; i < n; i++) {
+    //     rounds.push(lorem.generateSentences(1))
+    // }
     return rounds
 }
 

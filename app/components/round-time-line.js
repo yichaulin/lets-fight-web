@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Timeline } from 'antd';
-
-const sleep = async (times) => {
-    return new Promise(resolve => {
-        setTimeout(resolve, times)
-    })
-}
+import sleep from 'sleep-promise';
 
 const displayRoundGadually = async (allRounds, setDisplayRounds) => {
     for (let i = 0; i < allRounds.length; i++) {
