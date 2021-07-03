@@ -22,9 +22,10 @@ const RoundTimeLine = ({rounds}) => {
     }, [rounds])
 
     return (
-        <Timeline>
+        <Timeline mode="alternate">
             {displayRounds.map((round, i) => {
-                return <Timeline.Item key={`round-${i}`}>{round}</Timeline.Item>
+                const position = i % 2 == 1 ? 'right' : 'left'
+                return <Timeline.Item key={`round-${i}`} position={position}>{round}</Timeline.Item>
             })}
         </Timeline>
     );
