@@ -2,13 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Timeline } from 'antd';
 import sleep from 'sleep-promise';
 import { FormatRoundResults } from '../formatter/formatter'
+import { FetchCombat } from "../api/lets-fight";
 
 const roundWaitingTime = 2000
-
-const generateNewRounds = () => {
-    const res = require('../../res.json')
-    return res.roundResults
-}
 
 const displayRoundGadually = async ({rounds, setDisplayRounds, emitFightersHP, isLeftFighter}) => {
     let displayedRounds = []
@@ -28,12 +24,15 @@ const displayRoundGadually = async ({rounds, setDisplayRounds, emitFightersHP, i
     }
 }
 
-const RoundTimeLine = ({roundID, emitFightingOver, emitFightersHP, isLeftFighter, isReadyToFight}) => {
+const RoundTimeLine = ({roundID, emitFightingOver, emitFightersHP, isLeftFighter, isReadyToFight, fighterNames}) => {
     const [displayRounds, setDisplayRounds] = useState([])
     const [rounds, setRounds] = useState([])
 
     useEffect(async() => {
-        setRounds(generateNewRounds())
+        if (fighterNames[0] && fighterNames[1]) {
+            const res = await FetchCombat(fighterNames)
+            setRounds(res.data.roundResults)
+        }
     }, [roundID])
 
     useEffect(async() => {

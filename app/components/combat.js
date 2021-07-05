@@ -55,6 +55,7 @@ const Combat = ({ fighterNames, roundID, isFightingHandler }) => {
                     emitFightersHP={setFightersHP}
                     isLeftFighter={isLeftFighter}
                     isReadyToFight={fighterA.isReady && fighterB.isReady}
+                    fighterNames={fighterNames}
                 />
             </Col>
             <Col span={8}>
