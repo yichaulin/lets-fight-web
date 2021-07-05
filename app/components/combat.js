@@ -2,68 +2,78 @@ import React, { useState, useEffect } from "react";
 import { Row, Col } from 'antd';
 import RoundTimeLine from './round-time-line';
 import FighterProfile from './fighter-profile';
-
-const initFighter = (fighterName, isReady) => {
-    return {
-        name: fighterName,
-        hp: 100,
-        isReady: isReady == true ? true : false,
-    }
-}
+import { FetchCombat } from '../api/lets-fight'
+import { FormatRoundResults } from '../formatter/formatter'
 
 const Combat = ({ fighterNames, roundID, isFightingHandler }) => {
-    const [fighterA, setFighterA] = useState({})
-    const [fighterB, setFighterB] = useState({})
+    const [isReady, setIsReady] = useState([false, false])
+    const [hp, setHP] = useState([])
+    const [rounds, setRounds] = useState([])
+            
+    const formatRoundResults = (roundResults) => {
+        const formattedRoundResults = []
 
-    const setFightersHP = (fighterName, hp) => {
-        if (fighterName == fighterA.name) {
-            setFighterA({...fighterA, hp: hp})
-        } else {
-            setFighterB({...fighterB, hp: hp})
+        for (let i = 0; i < roundResults.length; i++){
+            const roundResult = roundResults[i]
+            const formattedMsg = FormatRoundResults(roundResult)
+            let timeLineDotPosition = 'right'
+            let updateFighterHP = () => {
+                setHP([roundResult.attackerRestHP, roundResult.defenderRestHP])
+            }
+
+            if (roundResult.attacker === fighterNames[1]) {
+                timeLineDotPosition = 'left'
+                updateFighterHP = () => {
+                    setHP([roundResult.defenderRestHP, roundResult.attackerRestHP])
+                }
+            }
+
+            formattedRoundResults.push({
+                msg: formattedMsg,
+                timeLineDotPosition: timeLineDotPosition,
+                updateFighterHP: updateFighterHP
+            })
         }
+
+        return formattedRoundResults
     }
 
-    const isLeftFighter = (fighterName) => {
-        return fighterA.name == fighterName
-    }
 
-    // useEffect(() => {
-    //     if (fighterA.isReady && fighterB.isReady) {
-    //     }
-    // }, [fighterA, fighterB])
-
-    useEffect(() => {
-        setFighterA(initFighter(fighterNames[0]))
-        setFighterB(initFighter(fighterNames[1]))
+    useEffect(async () => {
+        setRounds([])
+        setHP([100, 100])
     }, [roundID])
 
+    useEffect(async () => {
+        if (isReady[0] && isReady[1]) {
+            const res = await FetchCombat(fighterNames)
+            const formattedRoundResults = formatRoundResults(res.data.roundResults)
+            setRounds(formattedRoundResults)
+        }
+    }, [isReady, roundID])
 
     return (
         <Row justify="center">
             <Col span={8}>
                 <FighterProfile
                     header="Fighter A"
-                    emitIsReady={(isReady) => setFighterA({...fighterA, isReady: isReady})}
-                    fighterName={fighterA.name}
-                    hp={fighterA.hp}
+                    emitIsReady={(val) => setIsReady([val, isReady[1]])}
+                    fighterName={fighterNames[0]}
+                    hp={hp[0]}
                 />
             </Col>
             <Col span={8}>
                 <RoundTimeLine
-                    roundID={roundID}
+                    roundResults={rounds}
                     emitFightingOver={() => isFightingHandler(false)}
-                    emitFightersHP={setFightersHP}
-                    isLeftFighter={isLeftFighter}
-                    isReadyToFight={fighterA.isReady && fighterB.isReady}
-                    fighterNames={fighterNames}
                 />
             </Col>
             <Col span={8}>
                 <FighterProfile
                     header="Fighter B"
-                    emitIsReady={(isReady) => setFighterB({...fighterB, isReady: isReady})}
-                    fighterName={fighterB.name}
-                    hp={fighterB.hp}
+                    emitIsReady={(val) => setIsReady([isReady[0], val])}
+                    fighterName={fighterNames[1]}
+                    hp={hp[1]}
                 />
             </Col>
         </Row>

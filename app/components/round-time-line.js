@@ -1,53 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { Timeline } from 'antd';
 import sleep from 'sleep-promise';
-import { FormatRoundResults } from '../formatter/formatter'
-import { FetchCombat } from "../api/lets-fight";
 
 const roundWaitingTime = 2000
 
-const displayRoundGadually = async ({rounds, setDisplayRounds, emitFightersHP, isLeftFighter}) => {
-    let displayedRounds = []
-    for (let i = 0; i < rounds.length; i++) {
-        await sleep(roundWaitingTime)
-        const latestRound = rounds[i]
-        const formattedMsg = FormatRoundResults(latestRound)
-        const position = isLeftFighter(latestRound.attacker) ? 'right' : 'left'
-        const displayRound = {
-            position: position,
-            msg: formattedMsg,
-        }
 
-        displayedRounds = displayedRounds.concat([displayRound])
-        setDisplayRounds(displayedRounds)
-        emitFightersHP(latestRound.defender, latestRound.defenderRestHP)
-    }
-}
-
-const RoundTimeLine = ({roundID, emitFightingOver, emitFightersHP, isLeftFighter, isReadyToFight, fighterNames}) => {
+const RoundTimeLine = ({roundResults, emitFightingOver}) => {
     const [displayRounds, setDisplayRounds] = useState([])
-    const [rounds, setRounds] = useState([])
 
     useEffect(async() => {
-        if (fighterNames[0] && fighterNames[1]) {
-            const res = await FetchCombat(fighterNames)
-            setRounds(res.data.roundResults)
+        if (roundResults.length === 0) {
+            setDisplayRounds([])
+        } else {
+            await displayRoundGadually(roundResults)
         }
-    }, [roundID])
+    }, [roundResults])
 
-    useEffect(async() => {
-        if (isReadyToFight) {
-            await displayRoundGadually({rounds, setDisplayRounds, emitFightersHP, isLeftFighter})
-            emitFightingOver()
+    const displayRoundGadually = async (rounds) => {
+        let displayedRounds = []
+        for (let i = 0; i < rounds.length; i++) {
+            const latestRound = rounds[i]
+            await sleep(roundWaitingTime)
+            displayedRounds = displayedRounds.concat([latestRound])
+            setDisplayRounds(displayedRounds)
+            latestRound.updateFighterHP()
         }
-    }, [isReadyToFight])
+        emitFightingOver()
+    }
 
     return (
         <Timeline mode="alternate" reverse={true}>
             {displayRounds.map((round, i) => (
                 <Timeline.Item
                     key={`round-${i}`}
-                    position={round.position}>
+                    position={round.timeLineDotPosition}>
                         {round.msg}
                 </Timeline.Item>
             ))}
