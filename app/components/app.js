@@ -1,6 +1,5 @@
 import React, {Fragment, useState} from 'react';
 import { Divider, Row, Col } from 'antd'
-import ReactDOM from 'react-dom';
 import Combat from './combat';
 import CombatSetup from './combat-setup'
 

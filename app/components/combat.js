@@ -2,45 +2,39 @@ import React, { useState, useEffect } from "react";
 import { Row, Col } from 'antd';
 import RoundTimeLine from './round-time-line';
 import FighterProfile from './fighter-profile';
-import { FormatRoundResults } from '../formatter/formatter'
-import { LoremIpsum } from "lorem-ipsum";
 
-const lorem = new LoremIpsum()
-
-const generateNewRounds = (n) => {
-    const res = require('../../res.json')
-    const roundResults = res.roundResults
-    const rounds = []
-
-    for (let i = 0; i < roundResults.length; i++) {
-        const roundResult = roundResults[i]
-        const formattedResults = FormatRoundResults(roundResult)
-        rounds.push(formattedResults)
+const initFighter = (fighterName, isReady) => {
+    return {
+        name: fighterName,
+        hp: 100,
+        isReady: isReady == true ? true : false,
     }
-    // const rounds = []
-    // for (let i = 0; i < n; i++) {
-    //     rounds.push(lorem.generateSentences(1))
-    // }
-    return rounds
 }
 
-var newRounds = []
-const Combat = ({ fighterNames, roundID, isFighting, isFightingHandler }) => {
-    const [rounds, setRounds] = useState([])
-    const [isAReady, setIsAReady] = useState(false)
-    const [isBReady, setIsBReady] = useState(false)
+const Combat = ({ fighterNames, roundID, isFightingHandler }) => {
+    const [fighterA, setFighterA] = useState({})
+    const [fighterB, setFighterB] = useState({})
+
+    const setFightersHP = (fighterName, hp) => {
+        if (fighterName == fighterA.name) {
+            setFighterA({...fighterA, hp: hp})
+        } else {
+            setFighterB({...fighterB, hp: hp})
+        }
+    }
+
+    const isLeftFighter = (fighterName) => {
+        return fighterA.name == fighterName
+    }
+
+    // useEffect(() => {
+    //     if (fighterA.isReady && fighterB.isReady) {
+    //     }
+    // }, [fighterA, fighterB])
 
     useEffect(() => {
-        if (isAReady && isBReady) {
-            setRounds(newRounds)
-        }
-    }, [isAReady, isBReady])
-
-    useEffect(() => {
-        newRounds = generateNewRounds(4)
-        if (isAReady && isBReady) {
-            setRounds(newRounds)
-        }
+        setFighterA(initFighter(fighterNames[0]))
+        setFighterB(initFighter(fighterNames[1]))
     }, [roundID])
 
 
@@ -49,21 +43,26 @@ const Combat = ({ fighterNames, roundID, isFighting, isFightingHandler }) => {
             <Col span={8}>
                 <FighterProfile
                     header="Fighter A"
-                    fighterName={fighterNames[0]}
-                    setIsReady={setIsAReady}
+                    emitIsReady={(isReady) => setFighterA({...fighterA, isReady: isReady})}
+                    fighterName={fighterA.name}
+                    hp={fighterA.hp}
                 />
             </Col>
             <Col span={8}>
                 <RoundTimeLine
-                    rounds={rounds}
-                    isFightingHandler={isFightingHandler}
+                    roundID={roundID}
+                    emitFightingOver={() => isFightingHandler(false)}
+                    emitFightersHP={setFightersHP}
+                    isLeftFighter={isLeftFighter}
+                    isReadyToFight={fighterA.isReady && fighterB.isReady}
                 />
             </Col>
             <Col span={8}>
                 <FighterProfile
                     header="Fighter B"
-                    fighterName={fighterNames[1]}
-                    setIsReady={setIsBReady}
+                    emitIsReady={(isReady) => setFighterB({...fighterB, isReady: isReady})}
+                    fighterName={fighterB.name}
+                    hp={fighterB.hp}
                 />
             </Col>
         </Row>

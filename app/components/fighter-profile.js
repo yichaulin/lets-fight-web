@@ -1,23 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { Card, Row, Col } from 'antd';
+import { Card, Row, Col, Progress } from 'antd';
 import { AvatarGenerator } from 'random-avatar-generator';
 import sleep from 'sleep-promise';
 
 const generator = new AvatarGenerator();
+const getColorByHP = (hp) => {
+    if (hp <= 25) {
+        return '#f5222d'
+    } else if (hp <= 60) {
+        return '#fadb14'
+    } else {
+        return '#52c41a'
+    }
+}
 
-const FighterProfile = ({header, fighterName, setIsReady }) => {
+const FighterProfile = ({header, fighterName, hp, emitIsReady }) => {
     const [loading, setLoading] = useState(true)
     const [imageUrl, setImageUrl] = useState("")
 
     const onLoadedHandler = () => {
         setLoading(false)
-        setIsReady(true)
+        emitIsReady(true)
     }
 
     useEffect(async () => {
         setImageUrl("")
         setLoading(true)
-        setIsReady(false)
+        emitIsReady(false)
 
         if (fighterName) {
             await sleep(1000)
@@ -44,6 +53,11 @@ const FighterProfile = ({header, fighterName, setIsReady }) => {
                     loading={loading}
                 >
                 </Card>
+                <Progress
+                    percent={hp}
+                    strokeColor={getColorByHP(hp)}
+                    format={p => p}
+                />
             </Col>
             <Col span={5} />
         </Row>

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     lang: 'zh',
     messages: {
         'CastAbility.General': '{attacker} 使出 {abilityName}',
