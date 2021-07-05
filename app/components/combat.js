@@ -6,7 +6,8 @@ import { FetchCombat } from '../api/lets-fight'
 import { FormatRoundResults } from '../formatter/formatter'
 
 const Combat = ({ fighterNames, roundID, isFightingHandler }) => {
-    const [isReady, setIsReady] = useState([false, false])
+    const [isAReady, setIsAReady] = useState(false)
+    const [isBReady, setIsBReady] = useState(false)
     const [hp, setHP] = useState([])
     const [rounds, setRounds] = useState([])
             
@@ -35,10 +36,8 @@ const Combat = ({ fighterNames, roundID, isFightingHandler }) => {
                 updateFighterHP: updateFighterHP
             })
         }
-
         return formattedRoundResults
     }
-
 
     useEffect(async () => {
         setRounds([])
@@ -46,19 +45,19 @@ const Combat = ({ fighterNames, roundID, isFightingHandler }) => {
     }, [roundID])
 
     useEffect(async () => {
-        if (isReady[0] && isReady[1]) {
+        if (isAReady && isBReady) {
             const res = await FetchCombat(fighterNames)
             const formattedRoundResults = formatRoundResults(res.data.roundResults)
             setRounds(formattedRoundResults)
         }
-    }, [isReady, roundID])
+    }, [isAReady, isBReady, roundID])
 
     return (
         <Row justify="center">
             <Col span={8}>
                 <FighterProfile
                     header="Fighter A"
-                    emitIsReady={(val) => setIsReady([val, isReady[1]])}
+                    emitIsReady={setIsAReady}
                     fighterName={fighterNames[0]}
                     hp={hp[0]}
                 />
@@ -72,7 +71,7 @@ const Combat = ({ fighterNames, roundID, isFightingHandler }) => {
             <Col span={8}>
                 <FighterProfile
                     header="Fighter B"
-                    emitIsReady={(val) => setIsReady([isReady[0], val])}
+                    emitIsReady={setIsBReady}
                     fighterName={fighterNames[1]}
                     hp={hp[1]}
                 />

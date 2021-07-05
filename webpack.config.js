@@ -51,6 +51,14 @@ module.exports = {
                     'css-loader'
                 ]
             },
+            {
+                test: /\.(png|jpe?g|gif)$/i,
+                use: [
+                  {
+                    loader: 'file-loader',
+                  },
+                ],
+              }
         ]
     },
     stats: {
@@ -58,7 +66,9 @@ module.exports = {
         errorDetails: true,
     },
     devServer: {
-        hot: true
+        hot: true,
+        disableHostCheck: true,
+        port: 3000
     },
     plugins: [
         HTMLWebpackPluginConfig,

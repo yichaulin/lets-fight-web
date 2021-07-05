@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, Progress } from 'antd';
 import { AvatarGenerator } from 'random-avatar-generator';
 import sleep from 'sleep-promise';
+import RIPImage from '../img/rip.jpeg';
 
 const generator = new AvatarGenerator();
 const getColorByHP = (hp) => {
@@ -15,20 +16,20 @@ const getColorByHP = (hp) => {
 }
 
 const FighterProfile = ({fighterName, hp, emitIsReady}) => {
-    const [imageUrl, setImageUrl] = useState("")
+    const [avatarImgUrl, setAvatarImgUrl] = useState("")
 
-    const onLoadedHandler = () => {
-        emitIsReady(true)
+    const isDead = () => {
+        return hp <= 0
     }
 
     useEffect(async () => {
-        setImageUrl("")
+        setAvatarImgUrl("")
         emitIsReady(false)
 
         if (fighterName) {
             await sleep(1000)
-            const imageUrl = generator.generateRandomAvatar(fighterName)
-            setImageUrl(imageUrl)
+            const imgUrl = generator.generateRandomAvatar(fighterName)
+            setAvatarImgUrl(imgUrl)
         }
     }, [fighterName])
 
@@ -43,11 +44,15 @@ const FighterProfile = ({fighterName, hp, emitIsReady}) => {
                     format={p => p}
                     strokeWidth={15}
                 />)}
-                {imageUrl && (<img
-                    alt={fighterName}
-                    src={imageUrl}
-                    onLoad={onLoadedHandler}
-                />)}
+                {avatarImgUrl && (
+                    <img alt={fighterName}
+                        src={avatarImgUrl}
+                        onLoad={() => emitIsReady(true)}
+                        style={{width: '100%', display: isDead() ? 'none' : 'block'}} />
+                )}
+                <img style={{width: '100%', display: isDead() ? 'block' : 'none'}}
+                    src={RIPImage} 
+                />
             </Col>
             <Col span={5} />
         </Row>
