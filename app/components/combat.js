@@ -11,10 +11,11 @@ const Combat = ({ fighterNames, roundID, isFightingHandler }) => {
     const [rounds, setRounds] = useState([])
             
     const formatRoundResults = (roundResults) => {
+        const sortedRoundResults = roundResults.sort((r,s) => r.roundNum > s.roundNum ? 1 : -1)
         const formattedRoundResults = []
 
-        for (let i = 0; i < roundResults.length; i++){
-            const roundResult = roundResults[i]
+        for (let i = 0; i < sortedRoundResults.length; i++){
+            const roundResult = sortedRoundResults[i]
             const formattedMsg = FormatRoundResults(roundResult)
             let timeLineDotPosition = 'right'
             let updateFighterHP = () => {
