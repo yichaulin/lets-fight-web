@@ -5,7 +5,7 @@ import FighterProfile from './fighter-profile';
 import { FetchCombat } from '../api/lets-fight'
 import { FormatRoundResults } from '../formatter/formatter'
 
-const Combat = ({ fighterNames, roundID, isFightingHandler }) => {
+const Combat = ({ fighterNames, roundID, isFightingHandler, emitWinner }) => {
     const [isAReady, setIsAReady] = useState(false)
     const [isBReady, setIsBReady] = useState(false)
     const [hp, setHP] = useState([])
@@ -49,6 +49,7 @@ const Combat = ({ fighterNames, roundID, isFightingHandler }) => {
             const res = await FetchCombat(fighterNames)
             const formattedRoundResults = formatRoundResults(res.data.roundResults)
             setRounds(formattedRoundResults)
+            emitWinner(res.data.winner)
         }
     }, [isAReady, isBReady, roundID])
 

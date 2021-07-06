@@ -5,7 +5,7 @@ import sleep from 'sleep-promise';
 const roundWaitingTime = 2000
 
 
-const RoundTimeLine = ({roundResults, emitFightingOver}) => {
+const RoundTimeLine = ({roundResults, emitFightingOver }) => {
     const [displayRounds, setDisplayRounds] = useState([])
 
     useEffect(async() => {
