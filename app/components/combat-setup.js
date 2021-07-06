@@ -29,8 +29,8 @@ const CombatSetup = ({ isFighting, combatSetupHandler }) => {
 
     return (
         <Form fields={fields} onFinish={setupHandler}>
-            <Row gutter={[12, 0]}>
-                <Col xs={12} sm={12} md={24}>
+            <Row justify='center'>
+                <Col span={20}>
                     <Form.Item
                         label="選擇 1"
                         name="fighterA"
@@ -41,17 +41,23 @@ const CombatSetup = ({ isFighting, combatSetupHandler }) => {
                         />
                     </Form.Item>
                 </Col>
-                <Col xs={12} sm={12} md={24}>
+                <Col span={20}>
                     <Form.Item
                         label="選擇 2"
                         name="fighterB"
+                        labelCol={{span: 5}}
                     >
                         <Input placeholder='Ex: 肯德基' disabled={isFighting} />
                     </Form.Item>
                 </Col>
-                <Col span={24}>
+                <Col span={8}>
                     <Form.Item>
-                        <Button type="primary" htmlType="submit" loading={isFighting}>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            loading={isFighting}
+                            block
+                        >
                             決鬥！！！
                         </Button>
                     </Form.Item>
