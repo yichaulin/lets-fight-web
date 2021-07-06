@@ -22,10 +22,10 @@ const CombatSetup = ({ isFighting, combatSetupHandler }) => {
     return (
         <Form fields={fields} onFinish={setupHandler}>
             <Form.Item label="選擇 1" name="fighterA">
-                <Input disabled={isFighting} />
+                <Input placeholder='Ex: 麥當勞' disabled={isFighting} />
             </Form.Item>
             <Form.Item label="選擇 2" name="fighterB">
-                <Input disabled={isFighting} />
+                <Input placeholder='Ex: 肯德基' disabled={isFighting} />
             </Form.Item>
             <Form.Item>
                 <Button type="primary" htmlType="submit" loading={isFighting}>
