@@ -21,14 +21,16 @@ const App = () => {
     return (
         <Fragment>
             <Title><div style={{textAlign: 'center'}}>決策工具</div></Title>
-            <Row>
-                <Col span={7} offset={1}>
+            <Row justify="center">
+                <Col xs={{span: 20}} sm={{span: 8}}>
                     <CombatSetup
                         isFighting={isFighting}
                         combatSetupHandler={combatSetupHandler}
                     />
                 </Col>
-                <Col span={8} offset={2}>
+            </Row>
+            <Row justify="center">
+                <Col xs={{span: 20}} sm={{span: 8}}>
                     <CombatResult winner={winner} isShow={!isFighting} />
                 </Col>
             </Row>
