@@ -20,9 +20,11 @@ const App = () => {
                 isFighting={isFighting}
                 combatSetupHandler={combatSetupHandler}
             />
-            <Divider>
-                <h2>Rounds</h2>
-            </Divider>
+            { fighterNames[0] && fighterNames[1] && (
+                <Divider>
+                    <h2>決鬥結果</h2>
+                </Divider>
+            )}
             <Combat
                 roundID={roundID}
                 fighterNames={fighterNames}

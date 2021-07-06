@@ -34,7 +34,7 @@ const CombatSetup = ({ isFighting, combatSetupHandler }) => {
                         </Form.Item>
                         <Form.Item>
                             <Button type="primary" htmlType="submit" loading={isFighting}>
-                                Fight !!!!
+                                決鬥！！！
                             </Button>
                         </Form.Item>
                     </Form>
