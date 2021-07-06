@@ -14,7 +14,7 @@ module.exports = {
     ],
     output: {
         path: `${__dirname}/public`,
-        filename: 'js/[name].js',
+        filename: 'js/[name].[chunkhash].js',
     },
     devtool: 'cheap-module-source-map',
     module: {
@@ -73,7 +73,7 @@ module.exports = {
     plugins: [
         HTMLWebpackPluginConfig,
         new MiniCssExtractPlugin({
-            filename: 'css/[name].css',
+            filename: 'css/[name].[chunkhash].css',
         }),
     ],
 };
