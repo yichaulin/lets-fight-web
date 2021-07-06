@@ -1,6 +1,7 @@
 import React, { useState }from 'react'
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, Typography, Row, Col } from 'antd'
 import { v4 as uuidv4 } from 'uuid';
+const { Title } = Typography;
 
 const CombatSetup = ({ isFighting, combatSetupHandler }) => {
     const [fighters, setFighters] = useState([])
@@ -20,19 +21,26 @@ const CombatSetup = ({ isFighting, combatSetupHandler }) => {
     }]
 
     return (
-        <Form fields={fields} onFinish={setupHandler}>
-            <Form.Item label="Fighter A" name="fighterA">
-                <Input disabled={isFighting}/>
-            </Form.Item>
-            <Form.Item label="Fighter B" name="fighterB">
-                <Input disabled={isFighting}/>
-            </Form.Item>
-            <Form.Item>
-                <Button type="primary" htmlType="submit" loading={isFighting}>
-                    Fight !!!!
-                </Button>
-            </Form.Item>
-        </Form>
+        <div>
+            <Title><div style={{textAlign: 'center'}}>決策工具</div></Title>
+            <Row>
+                <Col span={7} offset={1}>
+                    <Form fields={fields} onFinish={setupHandler}>
+                        <Form.Item label="選擇 1" name="fighterA">
+                            <Input disabled={isFighting}/>
+                        </Form.Item>
+                        <Form.Item label="選擇 2" name="fighterB">
+                            <Input disabled={isFighting}/>
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" loading={isFighting}>
+                                Fight !!!!
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </Col>
+            </Row>
+        </div>
     )
 }
 

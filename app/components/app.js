@@ -1,5 +1,5 @@
 import React, {Fragment, useState} from 'react';
-import { Divider, Row, Col } from 'antd'
+import { Divider } from 'antd'
 import Combat from './combat';
 import CombatSetup from './combat-setup'
 
@@ -16,15 +16,10 @@ const App = () => {
 
     return (
         <Fragment>
-            <Row>
-                <Col span={1} />
-                <Col span={7}>
-                    <CombatSetup
-                        isFighting={isFighting}
-                        combatSetupHandler={combatSetupHandler}
-                    />
-                </Col>
-            </Row>
+            <CombatSetup
+                isFighting={isFighting}
+                combatSetupHandler={combatSetupHandler}
+            />
             <Divider>
                 <h2>Rounds</h2>
             </Divider>
