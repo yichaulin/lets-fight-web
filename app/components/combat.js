@@ -54,8 +54,8 @@ const Combat = ({ fighterNames, roundID, isFightingHandler, emitWinner }) => {
     }, [isAReady, isBReady, roundID])
 
     return (
-        <Row justify="center">
-            <Col span={8}>
+        <Row gutter={[8, 24]} justify="center">
+            <Col xs={{span: 12, order: 1}} sm={{span: 8, order: 1}}>
                 <FighterProfile
                     header="Fighter A"
                     emitIsReady={setIsAReady}
@@ -63,13 +63,13 @@ const Combat = ({ fighterNames, roundID, isFightingHandler, emitWinner }) => {
                     hp={hp[0]}
                 />
             </Col>
-            <Col span={8}>
+            <Col xs={{span: 24, order: 3}} sm={{span: 8, order: 2}}>
                 <RoundTimeLine
                     roundResults={rounds}
                     emitFightingOver={() => isFightingHandler(false)}
                 />
             </Col>
-            <Col span={8}>
+            <Col xs={{span: 12, order: 2}} sm={{span: 8, order: 3}}>
                 <FighterProfile
                     header="Fighter B"
                     emitIsReady={setIsBReady}
