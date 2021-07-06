@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Form, Input, Button, message } from 'antd'
+import { Form, Input, Button, message, Row, Col} from 'antd'
 import { v4 as uuidv4 } from 'uuid';
 
 const CombatSetup = ({ isFighting, combatSetupHandler }) => {
@@ -29,26 +29,34 @@ const CombatSetup = ({ isFighting, combatSetupHandler }) => {
 
     return (
         <Form fields={fields} onFinish={setupHandler}>
-            <Form.Item
-                label="選擇 1"
-                name="fighterA"
-            >
-                <Input
-                    placeholder='Ex: 麥當勞'
-                    disabled={isFighting}
-                />
-            </Form.Item>
-            <Form.Item
-                label="選擇 2"
-                name="fighterB"
-            >
-                <Input placeholder='Ex: 肯德基' disabled={isFighting} />
-            </Form.Item>
-            <Form.Item>
-                <Button type="primary" htmlType="submit" loading={isFighting}>
-                    決鬥！！！
-                </Button>
-            </Form.Item>
+            <Row gutter={[12, 0]}>
+                <Col xs={12} sm={12} md={24}>
+                    <Form.Item
+                        label="選擇 1"
+                        name="fighterA"
+                    >
+                        <Input
+                            placeholder='Ex: 麥當勞'
+                            disabled={isFighting}
+                        />
+                    </Form.Item>
+                </Col>
+                <Col xs={12} sm={12} md={24}>
+                    <Form.Item
+                        label="選擇 2"
+                        name="fighterB"
+                    >
+                        <Input placeholder='Ex: 肯德基' disabled={isFighting} />
+                    </Form.Item>
+                </Col>
+                <Col span={24}>
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit" loading={isFighting}>
+                            決鬥！！！
+                        </Button>
+                    </Form.Item>
+                </Col>
+            </Row>
         </Form>
     )
 }

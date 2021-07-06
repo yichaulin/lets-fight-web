@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Progress } from 'antd';
+import { Row, Col, Progress, Typography } from 'antd';
 import { AvatarGenerator } from 'random-avatar-generator';
 import sleep from 'sleep-promise';
 import RIPImage from '../img/rip.jpeg';
 
+const { Text } = Typography
 const generator = new AvatarGenerator();
 const getColorByHP = (hp) => {
     if (hp <= 25) {
         return '#f5222d'
     } else if (hp <= 60) {
-        return '#fadb14'
+        return '#ffa940'
     } else {
         return '#52c41a'
     }
@@ -37,12 +38,21 @@ const FighterProfile = ({fighterName, hp, emitIsReady}) => {
         <Row>
             <Col span={5} />
             <Col span={14}>
-                <h3 style={{textAlign: 'center'}}>{fighterName}</h3>
+                {fighterName && (
+                    <div style={{textAlign: 'center'}}>
+                        <Text><div>{fighterName}</div></Text>
+                        <Text>
+                            <span style={{color: getColorByHP(hp)}}>{hp}</span>
+                            <span>/100</span>
+                        </Text> 
+
+                    </div>
+                )}
                 {fighterName && (<Progress
                     percent={hp}
                     strokeColor={getColorByHP(hp)}
                     format={p => p}
-                    strokeWidth={15}
+                    showInfo={false}
                 />)}
                 {avatarImgUrl && (
                     <img alt={fighterName}

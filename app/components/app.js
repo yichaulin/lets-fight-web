@@ -22,7 +22,7 @@ const App = () => {
         <Fragment>
             <Title><div style={{textAlign: 'center'}}>決策工具</div></Title>
             <Row justify="center">
-                <Col xs={{span: 20}} sm={{span: 8}}>
+                <Col xs={{span: 20}} sm={{span: 20}} md={{span: 8}}>
                     <CombatSetup
                         isFighting={isFighting}
                         combatSetupHandler={combatSetupHandler}
@@ -30,7 +30,7 @@ const App = () => {
                 </Col>
             </Row>
             <Row justify="center">
-                <Col xs={{span: 20}} sm={{span: 8}}>
+                <Col xs={{span: 20}} sm={{span: 20}} md={{span: 8}}>
                     <CombatResult winner={winner} isShow={!isFighting} />
                 </Col>
             </Row>
