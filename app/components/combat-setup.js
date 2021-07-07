@@ -3,9 +3,10 @@ import { connect } from 'react-redux'
 import { Form, Input, Button, message, Row, Col} from 'antd'
 import { v4 as uuidv4 } from 'uuid';
 import { InitFighter } from '../redux/actions/fighters-action'
-import { SetIsFighting, SetRoundID } from '../redux/actions/combat-action';
+import { SetIsFighting, SetRoundID, SetPlaySpeed } from '../redux/actions/combat-action';
 
-const CombatSetup = ({ isFighting, InitFighter, SetRoundID, SetIsFighting }) => {
+
+const CombatSetup = ({ isFighting, playSpeed, InitFighter, SetRoundID, SetIsFighting, SetPlaySpeed }) => {
 
     const setupHandler = ({ fighterA, fighterB }) => {
         if (fighterA && fighterB && fighterA !== fighterB) {
@@ -24,6 +25,7 @@ const CombatSetup = ({ isFighting, InitFighter, SetRoundID, SetIsFighting }) => 
     return (
         <Form onFinish={setupHandler}>
             <Row justify='center'>
+                <Col span={2} />
                 <Col span={20}>
                     <Form.Item
                         label="選擇 1"
@@ -35,6 +37,8 @@ const CombatSetup = ({ isFighting, InitFighter, SetRoundID, SetIsFighting }) => 
                         />
                     </Form.Item>
                 </Col>
+                <Col span={2} />
+                <Col span={2} />
                 <Col span={20}>
                     <Form.Item
                         label="選擇 2"
@@ -43,18 +47,34 @@ const CombatSetup = ({ isFighting, InitFighter, SetRoundID, SetIsFighting }) => 
                         <Input placeholder='Ex: 肯德基' disabled={isFighting} />
                     </Form.Item>
                 </Col>
-                <Col span={8}>
+                <Col span={2} />
+                <Col span={2} />
+                <Col span={20}>
                     <Form.Item>
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                            loading={isFighting}
-                            block
-                        >
-                            決鬥！！！
-                        </Button>
+                        <Row justify='space-around'>
+                            <Col>
+                                <Button
+                                    type="primary"
+                                    htmlType="submit"
+                                    loading={isFighting}
+                                >
+                                    {isFighting ? '決鬥中' : '決鬥！！！'}
+                                </Button>
+                            </Col>
+                            { isFighting && <Col>
+                                <Button
+                                    type="primary"
+                                    onClick={()=>SetPlaySpeed(500)}
+                                    loading={playSpeed < 2000}
+                                    danger
+                                >
+                                    {playSpeed < 2000 ? '加速中' : '加速！！！'}
+                                </Button>
+                            </Col>}
+                        </Row>
                     </Form.Item>
                 </Col>
+                <Col span={2} />
             </Row>
         </Form>
     )
@@ -62,10 +82,11 @@ const CombatSetup = ({ isFighting, InitFighter, SetRoundID, SetIsFighting }) => 
 
 const mapStateToProps = ({combatReducer}) => {
     return {
-        isFighting: combatReducer.isFighting
+        isFighting: combatReducer.isFighting,
+        playSpeed: combatReducer.playSpeed
     }
 }
 
 export default connect(mapStateToProps,
-    { InitFighter, SetRoundID, SetIsFighting }
+    { InitFighter, SetRoundID, SetIsFighting, SetPlaySpeed }
 )(CombatSetup)

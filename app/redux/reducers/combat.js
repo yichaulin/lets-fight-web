@@ -1,10 +1,11 @@
-import {SET_IS_FIGHTING, SET_ROUND_ID, SET_WINNER, SET_ROUNDS} from '../action-types'
+import {SET_IS_FIGHTING, SET_ROUND_ID, SET_WINNER, SET_ROUNDS, SET_PLAY_SPEED} from '../action-types'
 
 const initState = {
     isFighting: false,
     winner: '',
     roundID: '',
     rounds: [],
+    playSpeed: 2000
 }
 
 export const combatReducer = (state = initState, action) => {
@@ -28,6 +29,11 @@ export const combatReducer = (state = initState, action) => {
             return {
                 ...state,
                 rounds: action.payload.rounds
+            }
+        case SET_PLAY_SPEED:
+            return {
+                ...state,
+                playSpeed: action.payload.playSpeed
             }
         default:
             return state
