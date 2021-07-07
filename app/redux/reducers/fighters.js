@@ -10,7 +10,7 @@ const initFighters = (state, names) => {
     for (let i = 0; i < names.length; i++){
         const name = names[i]
         fighters[name] = {
-            isReady: false,
+            isReady: state.fighterNames[i] === name,
             hp: 100
         }
     }
@@ -18,7 +18,7 @@ const initFighters = (state, names) => {
     return fighters
 }
 
-const fightersReducer = (state = initialState, action) => {
+export const fightersReducer = (state = initialState, action) => {
     const payload = action.payload
 
     switch (action.type) {
@@ -60,5 +60,3 @@ const fightersReducer = (state = initialState, action) => {
             return state            
     }
 }
-
-export default fightersReducer

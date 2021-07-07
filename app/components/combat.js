@@ -1,84 +1,60 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { connect } from 'react-redux'
 import { Row, Col } from 'antd';
 import RoundTimeLine from './round-time-line';
 import FighterProfile from './fighter-profile';
 import { FetchCombat } from '../api/lets-fight'
-import { FormatRoundResults } from '../formatter/formatter'
+import { SetWinner, SetRounds } from '../redux/actions/combat-action'
 
-const Combat = ({ fighterNames, roundID, isFightingHandler, emitWinner }) => {
-    const [isAReady, setIsAReady] = useState(false)
-    const [isBReady, setIsBReady] = useState(false)
-    const [hp, setHP] = useState([])
-    const [rounds, setRounds] = useState([])
-            
-    const formatRoundResults = (roundResults) => {
-        const sortedRoundResults = roundResults.sort((r,s) => r.roundNum > s.roundNum ? 1 : -1)
-        const formattedRoundResults = []
-
-        for (let i = 0; i < sortedRoundResults.length; i++){
-            const roundResult = sortedRoundResults[i]
-            const formattedMsg = FormatRoundResults(roundResult)
-            let timeLineDotPosition = 'right'
-            let updateFighterHP = () => {
-                setHP([roundResult.attackerRestHP, roundResult.defenderRestHP])
-            }
-
-            if (roundResult.attacker === fighterNames[1]) {
-                timeLineDotPosition = 'left'
-                updateFighterHP = () => {
-                    setHP([roundResult.defenderRestHP, roundResult.attackerRestHP])
-                }
-            }
-
-            formattedRoundResults.push({
-                msg: formattedMsg,
-                timeLineDotPosition: timeLineDotPosition,
-                updateFighterHP: updateFighterHP
-            })
-        }
-        return formattedRoundResults
-    }
+const Combat = ({ fighterNames, fighters, roundID, SetWinner, SetRounds }) => {
+    const fighterAName = fighterNames[0]
+    const fighterBName = fighterNames[1]
+    const fighterA = fighters[fighterAName] || {}
+    const fighterB = fighters[fighterBName] || {}
 
     useEffect(async () => {
-        setRounds([])
-        setHP([100, 100])
+        SetRounds([])
     }, [roundID])
 
     useEffect(async () => {
-        if (isAReady && isBReady) {
+        if (fighterA.isReady && fighterB.isReady) {
             const res = await FetchCombat(fighterNames)
-            const formattedRoundResults = formatRoundResults(res.data.roundResults)
-            setRounds(formattedRoundResults)
-            emitWinner(res.data.winner)
+            SetRounds(res.data.roundResults)
+            SetWinner(res.data.winner)
         }
-    }, [isAReady, isBReady, roundID])
+    }, [fighterA.isReady, fighterB.isReady, roundID])
 
     return (
         <Row gutter={[8, 24]} justify="center">
-            <Col xs={{span: 12, order: 1}} sm={{span: 12, order: 1}} md={{span: 8, order: 1}}>
+            <Col xs={{ span: 12, order: 1 }} sm={{ span: 12, order: 1 }} md={{ span: 8, order: 1 }}>
                 <FighterProfile
                     header="Fighter A"
-                    emitIsReady={setIsAReady}
-                    fighterName={fighterNames[0]}
-                    hp={hp[0]}
+                    fighterName={fighterAName}
+                    hp={fighterA.hp}
                 />
             </Col>
-            <Col xs={{span: 22, order: 3}} sm={{span: 22, order: 3}} md={{span: 8, order: 2}}>
-                <RoundTimeLine
-                    roundResults={rounds}
-                    emitFightingOver={() => isFightingHandler(false)}
-                />
+            <Col xs={{ span: 22, order: 3 }} sm={{ span: 22, order: 3 }} md={{ span: 8, order: 2 }}>
+                <RoundTimeLine />
             </Col>
-            <Col xs={{span: 12, order: 2}} sm={{span: 12, order: 2}} md={{span: 8, order: 3}}>
+            <Col xs={{ span: 12, order: 2 }} sm={{ span: 12, order: 2 }} md={{ span: 8, order: 3 }}>
                 <FighterProfile
                     header="Fighter B"
-                    emitIsReady={setIsBReady}
-                    fighterName={fighterNames[1]}
-                    hp={hp[1]}
+                    fighterName={fighterBName}
+                    hp={fighterB.hp}
                 />
             </Col>
         </Row>
     )
 }
 
-export default Combat
+const mapStateToProps = ({ fightersReducer, combatReducer }) => {
+    return {
+        fighterNames: fightersReducer.fighterNames,
+        fighters: fightersReducer.fighters,
+        roundID: combatReducer.roundID,
+    }
+}
+export default connect(
+    mapStateToProps,
+    { SetWinner, SetRounds }
+)(Combat)

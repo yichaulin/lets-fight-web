@@ -1,8 +1,9 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Alert } from 'antd'
 
-const CombatResult = ({ winner, isShow }) => {
-    return (isShow && winner && <Alert
+const CombatResult = ({ winner, isFighting }) => {
+    return (!isFighting && winner && <Alert
         message={(
             <strong style={{ fontSize: '20px' }}>
                 {winner}
@@ -18,4 +19,10 @@ const CombatResult = ({ winner, isShow }) => {
     />)
 }
 
-export default CombatResult
+const mapStateToProps = ({combatReducer}) => {
+    return {
+        winner: combatReducer.winner,
+        isFighting: combatReducer.isFighting
+    }
+}
+export default connect(mapStateToProps, null)(CombatResult)

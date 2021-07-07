@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { connect } from 'react-redux'
 import { Row, Col, Progress, Typography } from 'antd';
 import { AvatarGenerator } from 'random-avatar-generator';
 import sleep from 'sleep-promise';
 import RIPImage from '../img/rip.jpeg';
+import { SetFighterIsReady } from '../redux/actions/fighters-action';
 
 const { Text } = Typography
 const generator = new AvatarGenerator();
@@ -16,7 +18,7 @@ const getColorByHP = (hp) => {
     }
 }
 
-const FighterProfile = ({fighterName, hp, emitIsReady}) => {
+const FighterProfile = ({fighterName, hp, SetFighterIsReady}) => {
     const [avatarImgUrl, setAvatarImgUrl] = useState("")
 
     const isDead = () => {
@@ -25,7 +27,6 @@ const FighterProfile = ({fighterName, hp, emitIsReady}) => {
 
     useEffect(async () => {
         setAvatarImgUrl("")
-        emitIsReady(false)
 
         if (fighterName) {
             await sleep(1000)
@@ -57,7 +58,7 @@ const FighterProfile = ({fighterName, hp, emitIsReady}) => {
                 {avatarImgUrl && (
                     <img alt={fighterName}
                         src={avatarImgUrl}
-                        onLoad={() => emitIsReady(true)}
+                        onLoad={() => SetFighterIsReady(fighterName)}
                         style={{width: '100%', display: isDead() ? 'none' : 'block'}} />
                 )}
                 <img style={{width: '100%', display: isDead() ? 'block' : 'none'}}
@@ -69,4 +70,4 @@ const FighterProfile = ({fighterName, hp, emitIsReady}) => {
     )
 }
 
-export default FighterProfile
+export default connect(null, { SetFighterIsReady })(FighterProfile)

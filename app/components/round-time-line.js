@@ -1,31 +1,38 @@
 import React, { useEffect, useState } from "react";
+import { connect } from 'react-redux';
 import { Timeline } from 'antd';
 import sleep from 'sleep-promise';
+import { FormatRoundResults } from '../formatter/formatter'
+import { SetIsFighting } from "../redux/actions/combat-action";
+import { UpdateHP } from "../redux/actions/fighters-action";
 
 const roundWaitingTime = 2000
 
-
-const RoundTimeLine = ({roundResults, emitFightingOver }) => {
+const RoundTimeLine = ({ rounds, fighterNames, SetIsFighting, UpdateHP }) => {
     const [displayRounds, setDisplayRounds] = useState([])
 
-    useEffect(async() => {
-        if (roundResults.length === 0) {
+    useEffect(async () => {
+        if (!rounds || rounds.length === 0) {
             setDisplayRounds([])
         } else {
-            await displayRoundGadually(roundResults)
+            await displayRoundGadually(rounds)
         }
-    }, [roundResults])
+    }, [rounds])
 
     const displayRoundGadually = async (rounds) => {
         let displayedRounds = []
         for (let i = 0; i < rounds.length; i++) {
             const latestRound = rounds[i]
+            displayedRounds = displayedRounds.concat([{
+                msg: FormatRoundResults(latestRound),
+                timeLineDotPosition: latestRound.attacker === fighterNames[1] ? 'left' : 'right'
+            }])
+
             await sleep(roundWaitingTime)
-            displayedRounds = displayedRounds.concat([latestRound])
             setDisplayRounds(displayedRounds)
-            latestRound.updateFighterHP()
+            UpdateHP(latestRound.defender, latestRound.defenderRestHP)
         }
-        emitFightingOver()
+        SetIsFighting(false)
     }
 
     return (
@@ -34,10 +41,19 @@ const RoundTimeLine = ({roundResults, emitFightingOver }) => {
                 <Timeline.Item
                     key={`round-${i}`}
                     position={round.timeLineDotPosition}>
-                        {round.msg}
+                    {round.msg}
                 </Timeline.Item>
             ))}
         </Timeline>
     );
 }
-export default RoundTimeLine
+
+const mapStateToProps = ({ fightersReducer, combatReducer }) => {
+    return {
+        rounds: combatReducer.rounds,
+        fighterNames: fightersReducer.fighterNames
+    }
+}
+export default connect(mapStateToProps,
+    { SetIsFighting, UpdateHP }
+)(RoundTimeLine)
