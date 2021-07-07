@@ -1,8 +1,8 @@
+/* eslint-disable no-undef */
 import { createStore } from "redux";
 import rootReducer from "./reducers";
 
 export default createStore(
     rootReducer,
-    // TODO: disable in production mode
-     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    process.env.NODE_ENV !== "production" && window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
