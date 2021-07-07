@@ -63,7 +63,7 @@ const Combat = ({ fighterNames, roundID, isFightingHandler, emitWinner }) => {
                     hp={hp[0]}
                 />
             </Col>
-            <Col xs={{span: 24, order: 3}} sm={{span: 24, order: 3}} md={{span: 8, order: 2}}>
+            <Col xs={{span: 22, order: 3}} sm={{span: 22, order: 3}} md={{span: 8, order: 2}}>
                 <RoundTimeLine
                     roundResults={rounds}
                     emitFightingOver={() => isFightingHandler(false)}

@@ -45,7 +45,6 @@ const CombatSetup = ({ isFighting, combatSetupHandler }) => {
                     <Form.Item
                         label="選擇 2"
                         name="fighterB"
-                        labelCol={{span: 5}}
                     >
                         <Input placeholder='Ex: 肯德基' disabled={isFighting} />
                     </Form.Item>

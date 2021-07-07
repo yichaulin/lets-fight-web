@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Timeline } from 'antd';
 import sleep from 'sleep-promise';
 
-const roundWaitingTime = 3000
+const roundWaitingTime = 2000
 
 
 const RoundTimeLine = ({roundResults, emitFightingOver }) => {
