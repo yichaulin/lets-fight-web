@@ -1,0 +1,3 @@
+export const INIT_FIGHTER = 'INIT_FIGHTER'
+export const FIGHTER_IS_READY = 'FIGHTER_IS_READY'
+export const UPDATE_HP = 'UPDATE_HP'

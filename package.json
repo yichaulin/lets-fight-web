@@ -10,6 +10,7 @@
     "build": "NODE_ENV=production ./node_modules/.bin/webpack"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.6.0",
     "antd": "^4.16.6",
     "axios": "^0.21.1",
     "less-loader": "^10.0.1",
@@ -17,6 +18,8 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-intl": "^5.20.4",
+    "react-redux": "^7.2.4",
+    "redux": "^4.1.0",
     "sleep-promise": "^9.1.0",
     "uuid": "^8.3.2"
   },

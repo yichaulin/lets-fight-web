@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import { connect } from 'react-redux'
 import { Form, Input, Button, message, Row, Col} from 'antd'
 import { v4 as uuidv4 } from 'uuid';
+import { InitFighter } from '../redux/actions/fighters-action'
 
-const CombatSetup = ({ isFighting, combatSetupHandler }) => {
+const CombatSetup = ({ isFighting, combatSetupHandler, InitFighter }) => {
     const [fighters, setFighters] = useState([])
 
     const setupHandler = ({ fighterA, fighterB }) => {
@@ -11,6 +13,7 @@ const CombatSetup = ({ isFighting, combatSetupHandler }) => {
             const newRoundID = uuidv4()
             setFighters(newFighters)
             combatSetupHandler(newFighters, newRoundID)
+            InitFighter(newFighters)
         } else if (!fighterA && !fighterB) {
             message.warning("沒有猶豫的選擇嗎？")
         } else if (!fighterA || !fighterB) {
@@ -66,4 +69,4 @@ const CombatSetup = ({ isFighting, combatSetupHandler }) => {
     )
 }
 
-export default CombatSetup
+export default connect(null, { InitFighter })(CombatSetup)
