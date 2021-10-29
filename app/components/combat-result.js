@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Alert } from 'antd'
+import { FormattedMessage } from 'react-intl';
 
 const CombatResult = ({ winner, isFighting }) => {
     return (!isFighting && winner && <Alert
@@ -11,7 +12,7 @@ const CombatResult = ({ winner, isFighting }) => {
         )}
         description={(
             <div style={{ fontSize: '16px' }}>
-                就決定是你了！！！
+                <FormattedMessage id="ItIsYou"/>
             </div>
         )}
         type="success"

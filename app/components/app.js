@@ -1,6 +1,7 @@
 import React, {Fragment} from 'react';
 import { connect } from 'react-redux';
 import { Divider, Col, Row, Typography } from 'antd'
+import { FormattedMessage } from 'react-intl';
 import Combat from './combat';
 import CombatSetup from './combat-setup'
 import CombatResult from './combat-result'
@@ -10,7 +11,7 @@ const { Title } = Typography;
 const App = ({fighterNames}) => {
     return (
         <Fragment>
-            <Title><div style={{textAlign: 'center'}}>決策工具</div></Title>
+            <Title><div style={{textAlign: 'center'}}><FormattedMessage id="DecisionMakingTool" /></div></Title>
             <Row justify="center">
                 <Col xs={{span: 20}} sm={{span: 20}} md={{span: 8}}>
                     <CombatSetup />
@@ -23,7 +24,7 @@ const App = ({fighterNames}) => {
             </Row>
             { fighterNames[0] && fighterNames[1] && (
                 <Divider>
-                    <h2>決鬥結果</h2>
+                    <h2><FormattedMessage id="FightResult" /></h2>
                 </Divider>
             )}
             <Combat />
