@@ -11,11 +11,13 @@ let globalPlaySpeed
 const RoundTimeLine = ({ rounds, fighterNames, playSpeed, SetIsFighting, UpdateHP, ResetPlaySpeed }) => {
     const [displayRounds, setDisplayRounds] = useState([])
 
-    useEffect(async () => {
+    useEffect(() => {
         if (!rounds || rounds.length === 0) {
             setDisplayRounds([])
         } else {
-            await displayRoundGadually(rounds)
+            (async () => {
+                await displayRoundGadually(rounds)
+            })()
         }
     }, [rounds])
 
@@ -41,15 +43,15 @@ const RoundTimeLine = ({ rounds, fighterNames, playSpeed, SetIsFighting, UpdateH
     }
 
     return (
-        <Timeline mode="alternate" reverse={true}>
-            {displayRounds.map((round, i) => (
-                <Timeline.Item
-                    key={`round-${i}`}
-                    position={round.timeLineDotPosition}>
-                    {round.msg}
-                </Timeline.Item>
-            ))}
-        </Timeline>
+        <Timeline
+            mode="alternate"
+            reverse
+            items={displayRounds.map((round, i) => ({
+                key: `round-${i}`,
+                position: round.timeLineDotPosition,
+                children: round.msg,
+            }))}
+        />
     );
 }
 

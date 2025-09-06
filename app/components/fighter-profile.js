@@ -25,11 +25,13 @@ const FighterProfile = ({fighterName, hp, SetFighterIsReady}) => {
         return hp <= 0
     }
 
-    useEffect(async () => {
+    useEffect(() => {
         setAvatarImgUrl("")
 
         if (fighterName) {
-            await sleep(1000)
+            (async () => {
+                await sleep(1000)
+            })()
             const imgUrl = generator.generateRandomAvatar(fighterName)
             setAvatarImgUrl(imgUrl)
         }

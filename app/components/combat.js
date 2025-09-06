@@ -12,15 +12,19 @@ const Combat = ({ fighterNames, fighters, roundID, SetWinner, SetRounds }) => {
     const fighterA = fighters[fighterAName] || {}
     const fighterB = fighters[fighterBName] || {}
 
-    useEffect(async () => {
+    useEffect(() => {
         SetRounds([])
     }, [roundID])
 
-    useEffect(async () => {
+    useEffect(() => {
         if (fighterA.isReady && fighterB.isReady) {
-            const res = await FetchCombat(fighterNames)
-            SetRounds(res.data.roundResults)
-            SetWinner(res.data.winner)
+
+            (async () => {
+                const res = await FetchCombat(fighterNames);
+                SetRounds(res.data.roundResults)
+                SetWinner(res.data.winner)
+            })();
+
         }
     }, [fighterA.isReady, fighterB.isReady, roundID])
 
