@@ -1,3 +1,3 @@
-rm -rf ./public
+rm -rf ./dist
 yarn build
-aws s3 sync ./public s3://lets-fight-maxisme --delete
+aws s3 sync ./dist s3://lets-fight-maxisme --delete
